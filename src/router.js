@@ -36,7 +36,7 @@ const router = createRouter({
     { path: 'addtransactiontypes', component: AddTransactionTypes },
   ] },
   
-  { path: '/', redirect: '/accounts'},
+  { path: '/', redirect: '/accounts'}, 
   { path: '/notFound(.*)', component: NotFound }
   
 ]
