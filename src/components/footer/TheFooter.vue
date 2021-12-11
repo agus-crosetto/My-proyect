@@ -9,9 +9,12 @@
 
 <style scoped>
 footer {   
-       position: absolute;
-       bottom: 0;
-       width: 100%;
+  background-color: black;
+  position: static;
+  bottom: 0;
+  width: 100%;
+  height: 40px;
+  color: white;
        }
 p {
   color: azure;
