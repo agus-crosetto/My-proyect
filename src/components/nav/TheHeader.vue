@@ -17,7 +17,12 @@
           <router-link class="nav-link dropdown-toggle" to="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="true">
           </router-link>
           <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
-            <li><router-link class="dropdown-item" to="/accounts/search">Search Account</router-link></li>
+            
+            <li>
+              <router-link type="button" class="dropdown-item" to="/account-types">
+                ACCOUNT TYPES
+              </router-link>
+            </li>
           </ul>
         </li>
         
@@ -26,35 +31,15 @@
             TRANSACTIONS LIST
           </router-link>
         </li>
-        <li class="nav-item dropdown">
+        <li class="nav-item dropdown">    
           <router-link class="nav-link dropdown-toggle" to="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
           </router-link>
           <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
-            <li><router-link class="dropdown-item" to="/transactions/search">Search Transaction</router-link></li>
-          </ul>
-        </li>
-        <li>
-          <router-link type="button" class="btn btn-outline-secondary" to="/account-types">
-            ACCOUNT TYPES
-          </router-link>
-        </li>
-        <li class="nav-item dropdown">
-          <router-link class="nav-link dropdown-toggle" to="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="true">
-          </router-link>
-          <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
-            <li><router-link class="dropdown-item" to="/account-types/search">Search Account Types</router-link></li>
-          </ul>
-        </li>
-        <li>
-          <router-link type="button" class="btn btn-outline-secondary" to="/transaction-types">
-            TRANSACTIONS TYPES
-          </router-link>
-        </li>
-        <li class="nav-item dropdown">
-          <router-link class="nav-link dropdown-toggle" to="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="true">
-          </router-link>
-          <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
-            <li><router-link class="dropdown-item" to="/transaction-types/search">Search Transaction Types</router-link></li>
+            <li>
+              <router-link type="button" class="dropdown-item" to="/transaction-types">
+                TRANSACTIONS TYPES
+              </router-link>
+            </li>
           </ul>
         </li>
       </ul>

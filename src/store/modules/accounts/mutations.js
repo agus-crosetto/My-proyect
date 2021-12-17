@@ -5,4 +5,7 @@ export default {
     searchAccountsId(state, payload){
         state.accountResults = payload
     },
+    searchAccountsName(state, payload){
+        state.accountResults = payload
+    },
 };

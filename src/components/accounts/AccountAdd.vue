@@ -10,7 +10,7 @@
   </div>
     <div class="col-md-4">
     <label for="inputAccountTypeId" class="form-label">Account Type Id</label>
-    <input type="number" class="form-control" id="inputAccountTypeId" v-model.number="accountTypeId">
+    <input type="number" class="form-control" id="inputAccountTypeId" v-model.number="accountTypeId" required>
   </div>
   <div class="col-md-6">
     <label for="inputAddressLine1" class="form-label">Address Line 1</label>
@@ -57,7 +57,7 @@ export default {
     return{
       shortName:'',
       fullName: '',
-      accountTypeId: 0,
+      accountTypeId: null,
       addressLine1: '',
       addressLine2: '',
       city: '',

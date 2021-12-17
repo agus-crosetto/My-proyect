@@ -8,6 +8,8 @@ import 'bootstrap';
 
 import BaseCard from './components/UI/BaseCard.vue';
 import BaseButton from './components/UI/BaseButton.vue';
+import BaseSpinner from './components/UI/BaseSpinner.vue';
+import BaseDialog from './components/UI/BaseDialog.vue';
 
 const app = createApp(App)
 
@@ -16,5 +18,7 @@ app.use(store);
 
 app.component('base-card', BaseCard);
 app.component('base-button', BaseButton);
+app.component('base-spinner', BaseSpinner);
+app.component('base-dialog', BaseDialog);
 
 app.mount('#app');

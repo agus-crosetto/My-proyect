@@ -1,5 +1,8 @@
 <template>
 <div>
+  <base-dialog :show="!!error" title="An error ocurred!" @close="handleError">
+    <p>{{ error }}</p>
+  </base-dialog>
   <section>
     
     <div class="container">
@@ -7,7 +10,7 @@
         <div class="col-3 align-self-start">
         </div>
         <div class="col-6 align-self-center">
-          <h1>Account List</h1>
+          <h1>Accounts List</h1>
         </div>
         <div class="col-3 align-self-center">
           <account-search @search-data="searchData"></account-search>
@@ -23,54 +26,28 @@
 
         <div class="row">
           <div class="col-3 align-self-center">
-            <base-button @click="loadAccounts">Refresh List</base-button> 
+            <base-button @click="loadAccounts">All / Refresh List</base-button> 
           </div>
-          <div class="col-4 align-self-center">
+          <div class="col-6 align-self-center">
           <div class="container2"> 
-            <h4>Total Account:</h4><h5>{{TotalAccount}}</h5>
+            <h4>Total Account:  {{TotalAccount}}</h4>
           </div>
           </div>
-          <div class="col-5 align-self-center">
-          <form class="row g-2">
-            <div class="col-auto">
-              <input type="text" class="form-control" id="inputAccount" placeholder="Name Account">
-            </div>
-            <div class="col-auto">
-              <base-button link type="submit">Filter for Name</base-button>
+          <div class="col-3 align-self-center">
+          <form class="row g-2" @submit.prevent="searchFilter(searchField)">
+            <div>
+              <input type="text" class="form-control" id="inputAccount" placeholder="Short / Full Name Account"  v-model.trim="searchField" required>
             </div>
           </form>
         </div>
       </div>
      
-
-    <ul v-if="hasAccounts">
-         <table class="table table-striped table-hover table-bordered">
-           <thead>
-             <tr>
-               <th scope="col">ID</th>
-               <th scope="col">Short Name</th>
-               <th scope="col">Full Name</th>
-               <th scope="col">Account Type ID</th>
-               <th scope="col">City</th>
-               <th scope="col">Email</th>
-               <th scope="col">Phone</th>
-               <th scope="col">...</th>
-             </tr>
-           </thead>
-           <tr v-for="account in filteredAccounts" :key="account.id">
-               <td scope="col">{{ account.id }}</td>
-               <td scope="col">{{ account.shortName }}</td>
-               <td scope="col">{{ account.fullName }}</td>
-               <td scope="col">{{ account.accountTypeId }}</td>
-               <td scope="col">{{ account.city }}</td>
-               <td scope="col">{{ account.email }}</td>
-               <td scope="col">{{ account.phone }}</td>
-               <td scope="col">
-               <base-button link :to="this.$route.path + '/' + account.id" :id="account.id">View Details</base-button>
-               </td>
-           </tr>
-         </table>
-        </ul>
+           <div v-if="isLoading">
+             <base-spinner></base-spinner>
+           </div>
+    <ul v-else-if="hasAccounts">
+        <account-table></account-table>
+    </ul>
       <h3 v-else> No account Found.</h3>
     </base-card>
     </section>
@@ -82,20 +59,28 @@
 
 import AccountAdd from '../../components/accounts/AccountAdd.vue';
 import AccountSearch from '../../components/accounts/AccountSearch.vue';
+import AccountTable from '../../components/accounts/AccountTable.vue';
 
 export default {
   data(){
     return{
+      isLoading: false,
+      error: null,
       buttonActive: false,
       linkButtonRegistration: '',
+      searchField: '',
     };
   },
 
   components: {
     AccountAdd,
-    AccountSearch
+    AccountSearch,
+    AccountTable
   },
   methods:{
+    searchFilter(data){
+      this.$store.dispatch('accounts/searchAccountsName', data);
+    },
     showButtonActiveAddAccount(){
       this.buttonActive = !this.buttonActive;
         this.$router.replace({path: '/accounts'});
@@ -103,26 +88,44 @@ export default {
     saveData(data){
       this.$store.dispatch('accounts/addAccount', data);
       this.buttonActive = false;
+      this.loadAccounts();
     },
     searchData(data){
       this.$store.dispatch('accounts/searchAccountsId', data);
     },
-    loadAccounts(){
-      this.$store.dispatch('accounts/loadAccounts')
+    async loadAccounts(){
+      this.loadAccountTypes();
+      this.isLoading = true;
+      try {
+        await this.$store.dispatch('accounts/loadAccounts');
+      } catch (error) {
+        this.error = error.message || 'Something went wrong!'
+      }
+      this.isLoading = false;
     },
+    async loadAccountTypes(){
+      this.isLoading = true;
+      try {
+        await this.$store.dispatch('accountTypes/loadAccountTypes');
+      } catch (error) {
+          this.error = error.message || 'Something went wrong!'
+        }
+      this.isLoading = false;
+    },
+    handleError(){
+      this.error = null;
+    }
     },
     created(){
+      this.loadAccountTypes();
       this.loadAccounts();
     },
   computed: {
-    filteredAccounts(){
-        return this.$store.getters['accounts/accounts'];
-        },
         TotalAccount(){
           return this.$store.getters['accounts/accountTotal']
         },
         hasAccounts(){
-            return this.$store.getters['accounts/hasAccounts'];
+            return !this.isLoading && this.$store.getters['accounts/hasAccounts'];
         },
     },
 }
@@ -149,11 +152,11 @@ ul {
   position: relative;
 }
 .container2 {
-  border-radius: 12px;
-  border:1px solid black;
-  padding: 0rem;
-  margin: 0rem auto;
-  max-width: 100%;
+border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+  padding: 1rem;
+  margin: 2rem auto;
+  max-width: 90%;
 }
 
 </style>
